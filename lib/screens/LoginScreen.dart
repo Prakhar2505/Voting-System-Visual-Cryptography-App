@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:voting_system_crytography/constants.dart';
-import 'package:voting_system_crytography/screens/RegisterScreen.dart';
+import 'package:voting_system_cryptography/constants.dart';
+import 'package:voting_system_cryptography/screens/RegisterScreen.dart';
 
 class LoginPage extends StatefulWidget {
   @override

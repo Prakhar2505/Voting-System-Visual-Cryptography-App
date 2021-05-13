@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:voting_system_crytography/constants.dart';
-import 'package:voting_system_crytography/screens/LoginScreen.dart';
+import 'package:flutter/services.dart';
+import 'package:voting_system_cryptography/constants.dart';
+import 'package:voting_system_cryptography/screens/LoginScreen.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:voting_system_cryptography/screens/RegistrationSuccessfulScreen.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -8,6 +11,64 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+
+  LocalAuthentication auth = LocalAuthentication();
+  bool _canCheckBiometric;
+  List<BiometricType> _availableBiometrics;
+  String authorized = "Not authorized";
+
+  Future<void> _checkBiometric() async {
+    bool canCheckBiometric;
+    try {
+      canCheckBiometric = await auth.canCheckBiometrics;
+    } on PlatformException catch (e) {
+      print(e);
+    }
+
+    if (!mounted) return;
+    setState(() {
+      _canCheckBiometric = canCheckBiometric;
+    });
+  }
+
+  Future<void> _getAvailableBiometric() async {
+    List<BiometricType> availableBiometric;
+    try {
+      availableBiometric = await auth.getAvailableBiometrics();
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    setState(() {
+      _availableBiometrics = availableBiometric;
+    });
+  }
+
+  Future<void> _authenticate() async {
+    bool authenticated = false;
+    try {
+      authenticated = await auth.authenticate(
+          localizedReason: "Scan your finger to authenticate",
+          useErrorDialogs: true,
+          stickyAuth: false);
+    } on PlatformException catch (e) {
+      print(e);
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      authorized =
+      authenticated ? "Authorization success" : "Failed to Authenticate";
+      print(authorized);
+    });
+  }
+
+  @override
+  void initState(){
+    _checkBiometric();
+    _getAvailableBiometric();
+  }
+
   final formKey = GlobalKey<FormState>();
   String username = '';
   String email = '';
@@ -90,6 +151,13 @@ class _RegisterPageState extends State<RegisterPage> {
                         print('Username: $username');
                         print('Email: $email');
                         print('Password: $password');
+                        _authenticate();
+                        print("Status :"+authorized);
+                        if(authorized == "Authorization success"){
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => RegistrationSuccessfulPage()),
+                          );
+                        }
                         // Navigator.of(context).push(
                         //   MaterialPageRoute(builder: (_) => VerificationPage()),
                         // );

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:voting_system_crytography/screens/LoginScreen.dart';
-import 'package:voting_system_crytography/screens/RegisterScreen.dart';
+import 'package:voting_system_cryptography/screens/LoginScreen.dart';
+import 'package:voting_system_cryptography/screens/RegisterScreen.dart';
 
 void main() {
   runApp(MaterialApp(
