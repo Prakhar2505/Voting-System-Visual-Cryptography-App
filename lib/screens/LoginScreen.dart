@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:voting_system_cryptography/constants.dart';
 import 'package:voting_system_cryptography/screens/RegisterScreen.dart';
+import 'package:voting_system_cryptography/screens/VotingScreen.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -76,9 +77,9 @@ class _LoginPageState extends State<LoginPage> {
 
                         print('Email: $email');
                         print('Password: $password');
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(builder: (_) => DetectAutomaticLocationPage()),
-                        // );
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => VotingPage()),
+                        );
                       }
                     },
                     child: Container(

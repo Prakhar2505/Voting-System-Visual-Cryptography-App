@@ -143,7 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: size.height * 0.07,
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       final isValid = formKey.currentState.validate();
                       if (isValid) {
                         formKey.currentState.save();
@@ -151,17 +151,17 @@ class _RegisterPageState extends State<RegisterPage> {
                         print('Username: $username');
                         print('Email: $email');
                         print('Password: $password');
-                        _authenticate();
+                        await _authenticate();
                         print("Status :"+authorized);
                         if(authorized == "Authorization success"){
                           Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => RegistrationSuccessfulPage()),
+                            MaterialPageRoute(builder: (_) => RegistrationSuccessfulPage(
+                              username: username,
+                              userEmail : email,
+                              userPassword: password,
+                            )),
                           );
                         }
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(builder: (_) => VerificationPage()),
-                        // );
-
                       }
                     },
                     child: Container(

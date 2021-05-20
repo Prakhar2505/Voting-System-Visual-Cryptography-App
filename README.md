@@ -1,6 +1,6 @@
-# voting_system_crytography
+# voting_system_cryptography
 
-A new Flutter application.
+A new Flutter project.
 
 ## Getting Started
 

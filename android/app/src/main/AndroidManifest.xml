@@ -1,8 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="www.example.voting_system_crytography">
-    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    package="com.example.voting_system_cryptography">
    <application
-        android:label="voting_system_crytography"
+        android:label="voting_system_cryptography"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
