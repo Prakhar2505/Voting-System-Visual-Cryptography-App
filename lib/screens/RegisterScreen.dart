@@ -13,12 +13,12 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
 
   LocalAuthentication auth = LocalAuthentication();
-  bool _canCheckBiometric;
-  List<BiometricType> _availableBiometrics;
+  bool _canCheckBiometric = false;
+  List<BiometricType> _availableBiometrics = [];
   String authorized = "Not authorized";
 
   Future<void> _checkBiometric() async {
-    bool canCheckBiometric;
+    bool canCheckBiometric = false;
     try {
       canCheckBiometric = await auth.canCheckBiometrics;
     } on PlatformException catch (e) {
@@ -32,7 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> _getAvailableBiometric() async {
-    List<BiometricType> availableBiometric;
+    List<BiometricType> availableBiometric = [];
     try {
       availableBiometric = await auth.getAvailableBiometrics();
     } on PlatformException catch (e) {
@@ -46,6 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _authenticate() async {
     bool authenticated = false;
     try {
+      print("Hello");
       authenticated = await auth.authenticate(
           localizedReason: "Scan your finger to authenticate",
           useErrorDialogs: true,
@@ -71,6 +72,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final formKey = GlobalKey<FormState>();
   String username = '';
+  String voterID = '';
   String email = '';
   String password = '';
   String repassword = '';
@@ -101,12 +103,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       Text(
                         "Register",
                         style: TextStyle(
-                            fontSize: 45.0, fontWeight: FontWeight.bold),
+                            fontSize: 45.0, fontWeight: FontWeight.bold,color: Colors.red),
                       ),
                       Expanded(child: SizedBox()),
                       Icon(
                         Icons.wb_incandescent_sharp,
                         size: 95.0,
+                        color: Colors.redAccent,
                       )
                     ],
                   ),
@@ -127,6 +130,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           SizedBox(
                             height: 20,
                           ),
+                          voterIDHandler(),
+                          SizedBox(
+                            height: 20,
+                          ),
                           emailHandler(),
                           SizedBox(
                             height: 20,
@@ -144,11 +151,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      final isValid = formKey.currentState.validate();
+                      final isValid = formKey.currentState!.validate();
                       if (isValid) {
-                        formKey.currentState.save();
+                        formKey.currentState!.save();
 
                         print('Username: $username');
+                        print('VoterID: $voterID');
                         print('Email: $email');
                         print('Password: $password');
                         await _authenticate();
@@ -157,6 +165,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           Navigator.of(context).push(
                             MaterialPageRoute(builder: (_) => RegistrationSuccessfulPage(
                               username: username,
+                              voterID: voterID,
                               userEmail : email,
                               userPassword: password,
                             )),
@@ -227,7 +236,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget usernameHandler() => TextFormField(
     onChanged: (value) => setState(() => this.username = value),
-    onSaved: (value) => setState(() => this.username = value),
+    onSaved: (value) => setState(() => this.username = value!),
     decoration: InputDecoration(
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -247,7 +256,7 @@ class _RegisterPageState extends State<RegisterPage> {
       hintText: "Name",
     ),
     validator: (value) {
-      if (value.length < 4) {
+      if (value!.length < 4) {
         return 'Enter at least 4 characters';
       } else if (value.length > 30) {
         return 'Enter atmost 30 characters';
@@ -259,9 +268,43 @@ class _RegisterPageState extends State<RegisterPage> {
     textInputAction: TextInputAction.done,
   );
 
+  Widget voterIDHandler() => TextFormField(
+    onChanged: (value) => setState(() => this.voterID = value),
+    onSaved: (value) => setState(() => this.voterID = value!),
+    decoration: InputDecoration(
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: Colors.transparent, width: 3.0),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: Colors.transparent, width: 3.0),
+      ),
+      hintStyle: TextStyle(
+        fontSize: 12,
+        fontStyle: FontStyle.italic,
+      ),
+      filled: true,
+      fillColor: Color(0xffE7EBED),
+      contentPadding: EdgeInsets.symmetric(horizontal: 17, vertical: 12),
+      hintText: "Voter ID",
+    ),
+    validator: (value) {
+      if (value!.length < 4) {
+        return 'Enter at least 4 characters';
+      } else if (value.length > 16) {
+        return 'Enter atmost 16 characters';
+      } else{
+        return null;
+      }
+    },
+    keyboardType: TextInputType.name,
+    textInputAction: TextInputAction.done,
+  );
+
   Widget emailHandler() => TextFormField(
     onChanged: (value) => setState(() => this.email = value),
-    onSaved: (value) => setState(() => this.email = value),
+    onSaved: (value) => setState(() => this.email = value!),
     decoration: InputDecoration(
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -284,7 +327,7 @@ class _RegisterPageState extends State<RegisterPage> {
       final pattern = r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)';
       final regExp = RegExp(pattern);
 
-      if (value.isEmpty) {
+      if (value!.isEmpty) {
         return 'Enter an email';
       } else if (!regExp.hasMatch(value)) {
         return 'Enter a valid email';
@@ -298,7 +341,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget passwordHandler() => TextFormField(
     onChanged: (value) => setState(() => this.password = value),
-    onSaved: (value) => setState(() => this.password = value),
+    onSaved: (value) => setState(() => this.password = value!),
     decoration: InputDecoration(
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -329,7 +372,7 @@ class _RegisterPageState extends State<RegisterPage> {
           r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
       final regExp = RegExp(pattern);
 
-      if (value.isEmpty) {
+      if (value!.isEmpty) {
         return 'Enter Password';
       } else if (!regExp.hasMatch(value)) {
         return 'Enter a valid password';
@@ -342,7 +385,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget rePasswordHandler() => TextFormField(
     onChanged: (value) => setState(() => this.repassword = value),
-    onSaved: (value) => setState(() => this.repassword = value),
+    onSaved: (value) => setState(() => this.repassword = value!),
     decoration: InputDecoration(
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -374,7 +417,7 @@ class _RegisterPageState extends State<RegisterPage> {
       final regExp = RegExp(pattern);
 
 
-      if (value.isEmpty) {
+      if (value!.isEmpty) {
         return 'Enter Password';
       }else if (value != password ) {
         return 'Passwords do not match';

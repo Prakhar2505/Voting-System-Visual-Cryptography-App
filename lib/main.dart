@@ -15,6 +15,7 @@ class IntroScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
+        width: double.infinity,
         padding: EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -23,8 +24,8 @@ class IntroScreen extends StatelessWidget {
             Spacer(flex: 2,),
             Text("Welcome to"),
             Text(
-              "Remote Voting System",
-              style: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold),
+              "Cryptographic Voting System",
+              style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
             ),
             Spacer(flex: 2,),
             Container(

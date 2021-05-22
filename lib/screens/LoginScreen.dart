@@ -23,11 +23,12 @@ class _LoginPageState extends State<LoginPage> {
         body: Form(
           key: formKey,
           child: SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(size.width * 0.1, size.height * 0.05,
+                size.width * 0.1, size.height * 0.01),
             child: Container(
-              height: size.height,
+              height: size.height*0.95,
               width: size.width,
-              padding: EdgeInsets.fromLTRB(size.width * 0.1, size.height * 0.05,
-                  size.width * 0.1, size.height * 0.01),
+
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -37,12 +38,13 @@ class _LoginPageState extends State<LoginPage> {
                       Text(
                         "Login",
                         style: TextStyle(
-                            fontSize: 45.0, fontWeight: FontWeight.bold),
+                            fontSize: 45.0, fontWeight: FontWeight.bold,color: Colors.red),
                       ),
                       Expanded(child: SizedBox()),
                       Icon(
                         Icons.wb_incandescent_sharp,
                         size: 95.0,
+                        color: Colors.redAccent,
                       )
                     ],
                   ),
@@ -71,9 +73,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      final isValid = formKey.currentState.validate();
+                      final isValid = formKey.currentState!.validate();
                       if (isValid) {
-                        formKey.currentState.save();
+                        formKey.currentState!.save();
 
                         print('Email: $email');
                         print('Password: $password');
@@ -137,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget emailHandler() => TextFormField(
     onChanged: (value) => setState(() => this.email = value),
-    onSaved: (value) => setState(() => this.email = value),
+    onSaved: (value) => setState(() => this.email = value!),
     decoration: InputDecoration(
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -160,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
       final pattern = r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)';
       final regExp = RegExp(pattern);
 
-      if (value.isEmpty) {
+      if (value!.isEmpty) {
         return 'Enter an email';
       } else if (!regExp.hasMatch(value)) {
         return 'Enter a valid email';
@@ -174,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget passwordHandler() => TextFormField(
     onChanged: (value) => setState(() => this.password = value),
-    onSaved: (value) => setState(() => this.password = value),
+    onSaved: (value) => setState(() => this.password = value!),
     decoration: InputDecoration(
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -205,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
           r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
       final regExp = RegExp(pattern);
 
-      if (value.isEmpty) {
+      if (value!.isEmpty) {
         return 'Enter Password';
       } else if (!regExp.hasMatch(value)) {
         return 'Enter a valid password';

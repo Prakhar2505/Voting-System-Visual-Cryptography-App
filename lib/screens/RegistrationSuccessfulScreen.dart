@@ -4,12 +4,13 @@ import 'package:voting_system_cryptography/screens/LoginScreen.dart';
 
 class RegistrationSuccessfulPage extends StatelessWidget {
   final String username;
+  final String voterID;
   final String userEmail;
   final String userPassword;
 
-  RegistrationSuccessfulPage({this.username, this.userEmail, this.userPassword});
+  RegistrationSuccessfulPage({required this.username, required this.voterID, required this.userEmail, required this.userPassword});
   String generateAuthenticationKey(){
-    String authenticationPrivateKey = username+userEmail+userPassword;
+    String authenticationPrivateKey = username+voterID+userEmail+userPassword;
     return authenticationPrivateKey;
   }
   @override

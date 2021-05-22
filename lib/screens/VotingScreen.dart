@@ -17,8 +17,7 @@ class _VotingPageState extends State<VotingPage> {
     CampaignerData(name: 'Minnie Mouse', id: 'minnie mouse',desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula ornare lacus, porttitor pharetra sem luctus vitae. Vivamus ullamcorper elementum lorem, sed commodo quam tempus a. '),
   ];
 
-  int _currentIndex = 0;
-
+  String qrCode = '';
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -73,7 +72,7 @@ class _VotingPageState extends State<VotingPage> {
                       print("Vote");
 
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => QRScanPage()),
+                        MaterialPageRoute(builder: (_) => QRViewExample(campaignerName : serviceData[currentPos].name, privateKey: "DevashishDeva1234shishDevashish1234@gmail.comDeva@1234")),
                       );
                     },
                     child: Text(
@@ -102,9 +101,9 @@ class VotingCard extends StatelessWidget {
   final String cardImg;
   final String cardDesc;
   VotingCard({
-    @required this.cardName,
-    @required this.cardImg,
-    @required this.cardDesc,
+    required this.cardName,
+    required this.cardImg,
+    required this.cardDesc,
   });
   @override
   Widget build(BuildContext context) {
@@ -122,6 +121,7 @@ class VotingCard extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
                   height: size.height * 0.45,
                   width: size.width * 1,
                   decoration: BoxDecoration(
@@ -131,7 +131,8 @@ class VotingCard extends StatelessWidget {
                     children: [
                       SizedBox(height: size.height*0.14,),
                       Text(cardName,style: TextStyle(fontSize: 35.0,fontWeight: FontWeight.bold),),
-                      Text(cardDesc),
+                      SizedBox(height: 15,),
+                      Text(cardDesc,textAlign: TextAlign.justify,style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.w400),),
                     ],
                   ),
                 ),
@@ -160,8 +161,8 @@ class CampaignerData {
   final String id;
   final String desc;
   CampaignerData({
-    @required this.name,
-    @required this.id,
-    @required this.desc,
+    required this.name,
+    required this.id,
+    required this.desc,
   });
 }
